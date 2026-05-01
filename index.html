@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Sb — Developer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Bebas+Neue&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg:      #080808;
@@ -76,12 +76,12 @@
     animation: fadeDown 0.5s ease both;
   }
   .nav-logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 17px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-weight: 400;
+    font-size: 22px;
     color: var(--fg);
     text-decoration: none;
-    letter-spacing: -0.3px;
+    letter-spacing: 2px;
   }
   .nav-logo .ac { color: var(--accent); text-shadow: 0 0 10px rgba(74,240,255,0.5); }
   .nav-right {
@@ -133,12 +133,12 @@
   }
 
   h1 {
-    font-family: 'Syne', sans-serif;
-    font-size: clamp(40px, 7.5vw, 68px);
-    font-weight: 800;
-    line-height: 1.0;
-    letter-spacing: -2px;
-    margin-bottom: 28px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(58px, 11vw, 100px);
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: 3px;
+    margin-bottom: 32px;
   }
   h1 .muted { color: var(--dim); }
   h1 .glow  { color: var(--fg); }
@@ -261,12 +261,12 @@
   .project-card:hover::before { transform: scaleY(1); }
 
   .project-name {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 14.5px;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
     color: var(--fg);
     margin-bottom: 5px;
-    letter-spacing: -0.2px;
+    letter-spacing: 0.02em;
     transition: color 0.15s;
   }
   .project-card:hover .project-name { color: #fff; }
@@ -368,12 +368,12 @@
     gap: 18px;
   }
   .stat-val {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 24px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-weight: 400;
+    font-size: 28px;
     color: var(--accent);
     text-shadow: 0 0 24px rgba(74,240,255,0.25);
-    letter-spacing: -0.5px;
+    letter-spacing: 2px;
     line-height: 1.1;
   }
   .stat-label {
@@ -386,10 +386,10 @@
 
   /* ── CONTACT ── */
   .contact-link {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 600;
     font-size: 20px;
-    letter-spacing: -0.3px;
+    letter-spacing: 0.02em;
     color: var(--fg);
     text-decoration: none;
     position: relative;
@@ -420,6 +420,42 @@
   }
   .dot { color: var(--accent); margin: 0 5px; opacity: 0.6; }
 
+  /* ── HOBBIES ── */
+  .hobbies-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+  }
+  .hobby-card {
+    background: var(--bg);
+    padding: 24px 22px;
+    transition: background 0.15s;
+  }
+  .hobby-card:hover { background: #0c0c0c; }
+  .hobby-icon {
+    display: block;
+    font-size: 18px;
+    color: var(--accent);
+    text-shadow: 0 0 10px rgba(74,240,255,0.35);
+    margin-bottom: 12px;
+    opacity: 0.8;
+  }
+  .hobby-name {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--fg);
+    letter-spacing: 0.02em;
+    margin-bottom: 8px;
+  }
+  .hobby-desc {
+    font-size: 11px;
+    color: var(--mid);
+    line-height: 1.65;
+  }
+
   /* ── ANIMATIONS ── */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(16px); }
@@ -437,6 +473,7 @@
     .project-right { flex-direction: row; align-items: center; }
     .about-grid { grid-template-columns: 1fr; }
     .about-sep { display: none; }
+    .hobbies-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
@@ -445,10 +482,11 @@
 
   <!-- NAV -->
   <nav>
-    <a class="nav-logo" href="#"><span class="ac">_</span>sb</a>
+    <a class="nav-logo" href="#">SB</a>
     <div class="nav-right">
       <a class="nav-link" href="#projects">projects</a>
       <a class="nav-link" href="#about">about</a>
+      <a class="nav-link" href="#hobbies">hobbies</a>
       <a class="nav-link" href="https://github.com/sb-gravity100" target="_blank">github ↗</a>
     </div>
   </nav>
@@ -681,7 +719,7 @@
     </div>
     <div class="about-grid">
       <div class="about-text">
-        I'm <em>Sb</em> — a CS student and self-taught developer who started by scraping anime sites and building TypeScript APIs, and has since grown into shipping full-stack systems with real-world scope: mobile apps, REST backends with ML models, multi-platform management systems.
+        I'm <em>Sb</em> — a CS student and self-taught developer who started by scraping anime sites and building TypeScript APIs, and has since grown into shipping full-stack systems with real-world scope: mobile apps, REST backends with ML models, multi-platform management systems, and workflow automations.
         <br><br>
         My coursework grounds me in systems thinking — database design, networking, software engineering methodology. My personal projects keep me honest — they have to actually work.
         <br><br>
@@ -711,6 +749,33 @@
 
   <div class="divider"></div>
 
+  <!-- HOBBIES -->
+  <section id="hobbies">
+    <div class="section-header">
+      <span class="section-label">outside of code</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="hobbies-grid">
+      <div class="hobby-card">
+        <span class="hobby-icon">✂</span>
+        <p class="hobby-name">Video &amp; Photo Editing</p>
+        <p class="hobby-desc">Cutting clips, color grading, compositing — visual storytelling is its own kind of programming.</p>
+      </div>
+      <div class="hobby-card">
+        <span class="hobby-icon">⚙</span>
+        <p class="hobby-name">Workflow Automations</p>
+        <p class="hobby-desc">Building scripts and tools that make repetitive tasks disappear. If I do it twice, I automate it.</p>
+      </div>
+      <div class="hobby-card">
+        <span class="hobby-icon">◈</span>
+        <p class="hobby-name">Making Memes</p>
+        <p class="hobby-desc">The internet's highest art form. Precision timing, cultural awareness, and a dark sense of humor required.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
   <!-- CONTACT -->
   <section>
     <div class="section-header">
@@ -725,7 +790,6 @@
   <!-- FOOTER -->
   <footer>
     <span>sb-gravity100<span class="dot">·</span>2026</span>
-    <span>dev</span>
   </footer>
 
 </div>
