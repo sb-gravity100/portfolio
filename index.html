@@ -1,85 +1,733 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Sb — Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:      #080808;
+    --surface: #0e0e0e;
+    --border:  #1a1a1a;
+    --border2: #242424;
+    --fg:      #d4d4d4;
+    --mid:     #606060;
+    --dim:     #333;
+    --accent:  #4af0ff;
+    --accent2: #1aacbf;
+    --glow:    rgba(74, 240, 255, 0.12);
+    --glow-sm: rgba(74, 240, 255, 0.06);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* grain overlay */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* scanlines */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 2px,
+      rgba(0,0,0,0.06) 2px,
+      rgba(0,0,0,0.06) 3px
+    );
+    pointer-events: none;
+    z-index: 9998;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ── NAV ── */
+  nav {
+    padding: 30px 0 26px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    animation: fadeDown 0.5s ease both;
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 17px;
+    color: var(--fg);
+    text-decoration: none;
+    letter-spacing: -0.3px;
+  }
+  .nav-logo .ac { color: var(--accent); text-shadow: 0 0 10px rgba(74,240,255,0.5); }
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .nav-link {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--mid);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-link:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 86px 0 64px;
+    animation: fadeUp 0.6s 0.05s ease both;
+  }
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    width: 18px; height: 1px;
+    background: var(--accent);
+    box-shadow: 0 0 6px var(--accent);
+  }
+  .hero-dot {
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+    animation: blink 2.2s ease-in-out infinite;
+  }
+  @keyframes blink {
+    0%,100% { opacity:1; }
+    50%      { opacity:0.2; }
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(40px, 7.5vw, 68px);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -2px;
+    margin-bottom: 28px;
+  }
+  h1 .muted { color: var(--dim); }
+  h1 .glow  { color: var(--fg); }
+
+  .hero-desc {
+    max-width: 500px;
+    color: var(--mid);
+    font-size: 13px;
+    line-height: 1.95;
+    margin-bottom: 36px;
+  }
+  .hero-desc em { color: #909090; font-style: normal; }
+
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .pill {
+    padding: 4px 10px;
+    border: 1px solid var(--border2);
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    color: var(--dim);
+    cursor: default;
+    transition: border-color 0.18s, color 0.18s, box-shadow 0.18s;
+  }
+  .pill:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: inset 0 0 12px var(--glow-sm);
+  }
+
+  /* ── SECTION ── */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    position: relative;
+  }
+  .divider::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 0;
+    width: 48px; height: 1px;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+  }
+
+  section {
+    padding: 54px 0;
+    animation: fadeUp 0.65s 0.1s ease both;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .section-count {
+    font-size: 10px;
+    color: var(--dim);
+  }
+
+  /* ── PROJECT GROUPS ── */
+  .group-label {
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--dim);
+    padding: 14px 0 8px;
+    border-top: 1px solid var(--border);
+  }
+  .group-label:first-of-type { border-top: none; padding-top: 0; }
+
+  .projects-grid {
+    display: grid;
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin-bottom: 4px;
+  }
+
+  .project-card {
+    background: var(--bg);
+    padding: 22px 26px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 14px;
+    align-items: start;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.15s;
+  }
+  .project-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 2px;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--glow);
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 0.22s ease;
+  }
+  .project-card:hover { background: #0c0c0c; }
+  .project-card:hover::before { transform: scaleY(1); }
+
+  .project-name {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14.5px;
+    color: var(--fg);
+    margin-bottom: 5px;
+    letter-spacing: -0.2px;
+    transition: color 0.15s;
+  }
+  .project-card:hover .project-name { color: #fff; }
+
+  .project-desc {
+    font-size: 11.5px;
+    color: var(--mid);
+    line-height: 1.65;
+    margin-bottom: 12px;
+  }
+
+  .project-tags {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+  }
+  .tag {
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    color: var(--dim);
+    border: 1px solid var(--border2);
+    padding: 2px 7px;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .project-card:hover .tag {
+    border-color: rgba(74,240,255,0.14);
+    color: #484848;
+  }
+
+  .project-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    flex-shrink: 0;
+    padding-top: 2px;
+  }
+  .star {
+    font-size: 11px;
+    color: var(--accent);
+    text-shadow: 0 0 6px rgba(74,240,255,0.4);
+  }
+  .badge {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    border: 1px solid rgba(74,240,255,0.18);
+    padding: 1px 6px;
+  }
+  .arrow {
+    font-size: 15px;
+    color: var(--border2);
+    transition: color 0.18s, transform 0.18s;
+  }
+  .project-card:hover .arrow {
+    color: var(--accent);
+    transform: translate(2px, -2px);
+  }
+
+  .view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--dim);
+    text-decoration: none;
+    margin-top: 14px;
+    transition: color 0.2s;
+  }
+  .view-all::before {
+    content: '';
+    width: 14px; height: 1px;
+    background: currentColor;
+  }
+  .view-all:hover { color: var(--accent); }
+
+  /* ── ABOUT ── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1px 200px;
+    gap: 36px;
+    align-items: start;
+  }
+  .about-sep { background: var(--border); align-self: stretch; }
+
+  .about-text {
+    color: var(--mid);
+    font-size: 13px;
+    line-height: 1.95;
+  }
+  .about-text em { color: #888; font-style: normal; }
+
+  .stats {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .stat-val {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 24px;
+    color: var(--accent);
+    text-shadow: 0 0 24px rgba(74,240,255,0.25);
+    letter-spacing: -0.5px;
+    line-height: 1.1;
+  }
+  .stat-label {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin-top: 2px;
+  }
+
+  /* ── CONTACT ── */
+  .contact-link {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    letter-spacing: -0.3px;
+    color: var(--fg);
+    text-decoration: none;
+    position: relative;
+    padding-bottom: 3px;
+    display: inline-block;
+    transition: color 0.2s;
+  }
+  .contact-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+  }
+  .contact-link:hover { color: var(--accent); }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 22px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;
+    color: var(--dim);
+    letter-spacing: 0.06em;
+  }
+  .dot { color: var(--accent); margin: 0 5px; opacity: 0.6; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    .container { padding: 0 20px; }
+    h1 { font-size: 36px; letter-spacing: -1.5px; }
+    .project-card { grid-template-columns: 1fr; }
+    .project-right { flex-direction: row; align-items: center; }
+    .about-grid { grid-template-columns: 1fr; }
+    .about-sep { display: none; }
+  }
+</style>
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="#hero">Home</a></li>
-                <li><a href="#about">About Me</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#skills">Skills</a></li>
-                <li><a href="#testimonials">Testimonials</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+<div class="container">
 
-    <section id="hero">
-        <h1>Welcome to My Portfolio</h1>
-        <p>Your gateway to my work and experiences.</p>
-        <a href="#projects" class="btn">View My Work</a>
-    </section>
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#"><span class="ac">_</span>sb</a>
+    <div class="nav-right">
+      <a class="nav-link" href="#projects">projects</a>
+      <a class="nav-link" href="#about">about</a>
+      <a class="nav-link" href="https://github.com/sb-gravity100" target="_blank">github ↗</a>
+    </div>
+  </nav>
 
-    <section id="about">
-        <h2>About Me</h2>
-        <p>I am a passionate developer with skills in various technologies...</p>
-    </section>
+  <!-- HERO -->
+  <div class="hero">
+    <p class="hero-eyebrow"><span class="hero-dot"></span>open to opportunities</p>
+    <h1>
+      Full-Stack<br>
+      <span class="muted">&amp; Mobile</span><br>
+      Developer.
+    </h1>
+    <p class="hero-desc">
+      I'm <em>Sb</em> — a CS student and self-taught developer building
+      <em>full-stack systems, mobile apps, and open-source tools</em>.
+      My work spans scraping APIs and CLI tools to React Native apps with ML backends.
+      I ship things that actually run.
+    </p>
+    <div class="stack">
+      <span class="pill">TypeScript</span>
+      <span class="pill">JavaScript</span>
+      <span class="pill">Python</span>
+      <span class="pill">Dart / Flutter</span>
+      <span class="pill">React Native</span>
+      <span class="pill">Node.js</span>
+      <span class="pill">Express</span>
+      <span class="pill">SCSS</span>
+      <span class="pill">Socket.IO</span>
+      <span class="pill">REST APIs</span>
+      <span class="pill">Web Scraping</span>
+      <span class="pill">Expo / EAS</span>
+      <span class="pill">Docker</span>
+    </div>
+  </div>
 
-    <section id="projects">
-        <h2>Featured Projects</h2>
-        <div class="project">
-            <h3>Project Title 1</h3>
-            <p>Description of Project 1</p>
-            <a href="https://example.com/project1" target="_blank">View Project</a>
+  <div class="divider"></div>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section-header">
+      <span class="section-label">projects</span>
+      <div class="section-line"></div>
+      <span class="section-count">11 repos</span>
+    </div>
+
+    <p class="group-label">featured</p>
+    <div class="projects-grid">
+
+      <a class="project-card" href="https://github.com/sb-gravity100/ComPORT" target="_blank">
+        <div>
+          <p class="project-name">ComPORT</p>
+          <p class="project-desc">A React Native (Expo) mobile app for browsing PC parts, building bundles, and scoring comfort/compatibility via ML-backed endpoints. Features stack/tab navigation, React Context providers, and an axios API layer connecting to a deployed backend.</p>
+          <div class="project-tags">
+            <span class="tag">React Native</span>
+            <span class="tag">Expo / EAS</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">ML Integration</span>
+          </div>
         </div>
-        <div class="project">
-            <h3>Project Title 2</h3>
-            <p>Description of Project 2</p>
-            <a href="https://example.com/project2" target="_blank">View Project</a>
+        <div class="project-right">
+          <span class="badge">latest</span>
+          <span class="arrow">↗</span>
         </div>
-        <!-- Add more projects as needed -->
-    </section>
+      </a>
 
-    <section id="skills">
-        <h2>Technical Skills</h2>
-        <h3>Frontend</h3>
-        <p>HTML, CSS, JavaScript</p>
-        <h3>Backend</h3>
-        <p>Node.js, Python, Ruby</p>
-        <h3>Databases</h3>
-        <p>MySQL, MongoDB</p>
-    </section>
+      <a class="project-card" href="https://github.com/sb-gravity100/ComPORT_Server" target="_blank">
+        <div>
+          <p class="project-name">ComPORT_Server</p>
+          <p class="project-desc">The Express.js backend powering ComPORT — REST routes, middleware, MongoDB models, ML comfort-scoring model, and deployed live on Render at comport-server.onrender.com.</p>
+          <div class="project-tags">
+            <span class="tag">Node.js</span>
+            <span class="tag">Express</span>
+            <span class="tag">MongoDB</span>
+            <span class="tag">ML Model</span>
+            <span class="tag">Render</span>
+          </div>
+        </div>
+        <div class="project-right">
+          <span class="badge">latest</span>
+          <span class="arrow">↗</span>
+        </div>
+      </a>
 
-    <section id="activity">
-        <h2>Recent Activity</h2>
-        <p>Details about recent contributions, stats...</p>
-    </section>
+      <a class="project-card" href="https://github.com/sb-gravity100/canteen_management_cs302" target="_blank">
+        <div>
+          <p class="project-name">canteen_management_cs302</p>
+          <p class="project-desc">Full-stack canteen management system (CS302) with a Flutter/Dart mobile frontend, Python backend, Docker Compose orchestration, and Windows + Android build scripts. 439 commits.</p>
+          <div class="project-tags">
+            <span class="tag">Flutter / Dart</span>
+            <span class="tag">Python</span>
+            <span class="tag">Docker</span>
+            <span class="tag">HTML</span>
+          </div>
+        </div>
+        <div class="project-right">
+          <span class="arrow">↗</span>
+        </div>
+      </a>
 
-    <section id="testimonials">
-        <h2>Testimonials</h2>
-        <blockquote>
-            <p>"A great developer! Highly recommend." - Client 1</p>
-        </blockquote>
-        <blockquote>
-            <p>"Amazing work, delivered on time." - Client 2</p>
-        </blockquote>
-    </section>
+      <a class="project-card" href="https://github.com/sb-gravity100/inventory_system_cs304" target="_blank">
+        <div>
+          <p class="project-name">inventory_system_cs304</p>
+          <p class="project-desc">Full-stack inventory management system (CS304) with a JavaScript frontend and backend, DB seeding scripts, and 136 commits — organized with PLAN.md, PHASES.md, and FILE_INDEX.md.</p>
+          <div class="project-tags">
+            <span class="tag">JavaScript</span>
+            <span class="tag">Full-Stack</span>
+            <span class="tag">SQL</span>
+          </div>
+        </div>
+        <div class="project-right">
+          <span class="arrow">↗</span>
+        </div>
+      </a>
 
-    <section id="contact">
-        <h2>Contact Me</h2>
-        <p>Email: myemail@example.com</p>
-        <p>LinkedIn: <a href="https://linkedin.com/in/myprofile">linkedin.com/in/myprofile</a></p>
-        <p>GitHub: <a href="https://github.com/sb-gravity100">github.com/sb-gravity100</a></p>
-    </section>
+    </div>
 
-    <footer>
-        <p>&copy; 2026 My Name. All rights reserved.</p>
-    </footer>
+    <p class="group-label">open source / apis</p>
+    <div class="projects-grid">
+
+      <a class="project-card" href="https://github.com/sb-gravity100/node-vidstreaming" target="_blank">
+        <div>
+          <p class="project-name">node-vidstreaming</p>
+          <p class="project-desc">CLI and API for searching, streaming, and downloading anime from vidstreaming.io. Supports episode ranges, resolution selection, and async output. 49 commits.</p>
+          <div class="project-tags">
+            <span class="tag">TypeScript</span>
+            <span class="tag">JavaScript</span>
+            <span class="tag">CLI</span>
+          </div>
+        </div>
+        <div class="project-right">
+          <span class="star">★ 8</span>
+          <span class="arrow">↗</span>
+        </div>
+      </a>
+
+      <a class="project-card" href="https://github.com/sb-gravity100/node-4anime-scraper" target="_blank">
+        <div>
+          <p class="project-name">node-4anime-scraper</p>
+          <p class="project-desc">npm package for scraping 4anime — TypeScript typings, TypeDoc docs, episode filtering, 7 published releases, 90 commits.</p>
+          <div class="project-tags">
+            <span class="tag">TypeScript</span>
+            <span class="tag">npm Package</span>
+            <span class="tag">Scraping</span>
+          </div>
+        </div>
+        <div class="project-right">
+          <span class="star">★ 1</span>
+          <span class="arrow">↗</span>
+        </div>
+      </a>
+
+    </div>
+
+    <p class="group-label">experiments</p>
+    <div class="projects-grid">
+
+      <a class="project-card" href="https://github.com/sb-gravity100/manga-reader-sb" target="_blank">
+        <div>
+          <p class="project-name">manga-reader-sb</p>
+          <p class="project-desc">Full-stack manga reader with a TypeScript backend, SCSS-styled client. 156 commits.</p>
+          <div class="project-tags">
+            <span class="tag">TypeScript</span>
+            <span class="tag">SCSS</span>
+          </div>
+        </div>
+        <div class="project-right">
+          <span class="arrow">↗</span>
+        </div>
+      </a>
+
+      <a class="project-card" href="https://github.com/sb-gravity100/socket-io-test" target="_blank">
+        <div>
+          <p class="project-name">socket-io-test</p>
+          <p class="project-desc">Real-time web app — Socket.IO, TypeScript, SCSS. Client/server split with a database layer.</p>
+          <div class="project-tags">
+            <span class="tag">TypeScript</span>
+            <span class="tag">SCSS</span>
+            <span class="tag">Socket.IO</span>
+          </div>
+        </div>
+        <div class="project-right">
+          <span class="arrow">↗</span>
+        </div>
+      </a>
+
+      <a class="project-card" href="https://github.com/sb-gravity100/canvas-project-01" target="_blank">
+        <div>
+          <p class="project-name">canvas-project-01</p>
+          <p class="project-desc">Browser-based game with JavaScript, HTML Canvas, and Webpack — served via a Node.js backend.</p>
+          <div class="project-tags">
+            <span class="tag">JavaScript</span>
+            <span class="tag">Canvas</span>
+            <span class="tag">Webpack</span>
+          </div>
+        </div>
+        <div class="project-right">
+          <span class="arrow">↗</span>
+        </div>
+      </a>
+
+      <a class="project-card" href="https://github.com/sb-gravity100/wallpapers-I-have-recently" target="_blank">
+        <div>
+          <p class="project-name">wallpapers-I-have-recently</p>
+          <p class="project-desc">Curated anime wallpaper collection (Fate, KonoSuba, Spy×Family…) with a small serving API.</p>
+          <div class="project-tags">
+            <span class="tag">Assets</span>
+            <span class="tag">API</span>
+          </div>
+        </div>
+        <div class="project-right">
+          <span class="star">★ 1</span>
+          <span class="arrow">↗</span>
+        </div>
+      </a>
+
+    </div>
+
+    <a class="view-all" href="https://github.com/sb-gravity100?tab=repositories" target="_blank">
+      view all repositories on github
+    </a>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-header">
+      <span class="section-label">about</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="about-grid">
+      <div class="about-text">
+        I'm <em>Sb</em> — a CS student and self-taught developer who started by scraping anime sites and building TypeScript APIs, and has since grown into shipping full-stack systems with real-world scope: mobile apps, REST backends with ML models, multi-platform management systems.
+        <br><br>
+        My coursework grounds me in systems thinking — database design, networking, software engineering methodology. My personal projects keep me honest — they have to actually work.
+        <br><br>
+        I work from home and I know how to use branches now.
+      </div>
+      <div class="about-sep"></div>
+      <div class="stats">
+        <div>
+          <div class="stat-val">13</div>
+          <div class="stat-label">public repos</div>
+        </div>
+        <div>
+          <div class="stat-val">439+</div>
+          <div class="stat-label">commits (single project)</div>
+        </div>
+        <div>
+          <div class="stat-val">6+</div>
+          <div class="stat-label">languages used</div>
+        </div>
+        <div>
+          <div class="stat-val" style="font-size:14px;line-height:1.6;">TS · JS · Python<br>Dart · SCSS · SQL</div>
+          <div class="stat-label">primary stack</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- CONTACT -->
+  <section>
+    <div class="section-header">
+      <span class="section-label">contact</span>
+      <div class="section-line"></div>
+    </div>
+    <a class="contact-link" href="https://github.com/sb-gravity100" target="_blank">
+      github.com/sb-gravity100 ↗
+    </a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>sb-gravity100<span class="dot">·</span>2026</span>
+    <span>html + css</span>
+  </footer>
+
+</div>
 </body>
 </html>
