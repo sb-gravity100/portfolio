@@ -18,6 +18,7 @@
   --accent:  #0a3580;
   --accent2: #0550ae;
   --ink:     #0d1117;
+  font-size: 20px;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -27,7 +28,7 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: 'Inter', sans-serif;
-  font-size: 14px;
+  font-size: 1rem;
   line-height: 1.65;
   min-height: 100vh;
   overflow-x: hidden;
@@ -52,7 +53,7 @@ nav {
 .nav-logo {
   font-family: 'Inter', sans-serif;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--ink);
   text-decoration: none;
   letter-spacing: 0.1em;
@@ -66,7 +67,7 @@ nav {
 }
 
 .nav-link {
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 400;
   color: var(--mid);
   text-decoration: none;
@@ -85,7 +86,7 @@ nav {
   display: flex;
   align-items: center;
   gap: 12px;
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.12em;
   color: var(--accent);
@@ -105,7 +106,7 @@ nav {
 
 h1 {
   font-family: 'EB Garamond', serif;
-  font-size: clamp(48px, 9vw, 84px);
+  font-size: clamp(3rem, 9vw, 5.25rem);
   font-weight: 400;
   line-height: 1.05;
   letter-spacing: -0.5px;
@@ -121,7 +122,7 @@ h1 .muted {
 .hero-desc {
   max-width: 520px;
   color: var(--mid);
-  font-size: 15px;
+  font-size: 0.9375rem;
   font-weight: 300;
   line-height: 1.85;
   margin-bottom: 36px;
@@ -143,10 +144,7 @@ h1 .muted {
   padding: 5px 12px;
   border: 1px solid var(--border);
   background: var(--surface);
-  font-size: 12px;
-  font-weight: 400;
-  color: var(--mid);
-  cursor: default;
+  font-size: 0.75rem;
   transition: border-color 0.15s, color 0.15s;
 }
 
@@ -175,7 +173,7 @@ section {
 }
 
 .section-label {
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -190,13 +188,13 @@ section {
 }
 
 .section-count {
-  font-size: 12px;
+  font-size: 0.75rem;
   color: var(--dim);
 }
 
 /* PROJECT GROUPS */
 .group-label {
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -234,7 +232,7 @@ section {
 .project-name {
   font-family: 'Inter', sans-serif;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 0.875rem;
   color: var(--ink);
   margin-bottom: 6px;
   transition: color 0.12s;
@@ -243,7 +241,7 @@ section {
 .project-card:hover .project-name { color: var(--accent); }
 
 .project-desc {
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 300;
   color: var(--mid);
   line-height: 1.7;
@@ -257,7 +255,7 @@ section {
 }
 
 .tag {
-  font-size: 11px;
+  font-size: 0.6875rem;
   font-weight: 500;
   color: var(--mid);
   border: 1px solid var(--border);
@@ -275,13 +273,13 @@ section {
 }
 
 .star {
-  font-size: 12px;
+  font-size: 0.75rem;
   font-weight: 500;
   color: var(--accent);
 }
 
 .badge {
-  font-size: 10px;
+  font-size: 0.625rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -755,7 +753,7 @@ footer {
       <div class="section-line"></div>
     </div>
     <a class="contact-link" href="https://github.com/sb-gravity100" target="_blank">
-      sbducao.05@gmail.com ↗
+      github.com/sb-gravity100 ↗
     </a>
   </section>
 
